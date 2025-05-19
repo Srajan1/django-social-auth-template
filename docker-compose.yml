@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:17
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}'"]
+
+  web:
+    build: .
+    container_name: django-docker
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      redis:
+          condition: service_started
+      db:
+        condition: service_healthy
+    networks:
+      - backend
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:
