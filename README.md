@@ -1,3 +1,6 @@
+Used this guide to include auth functionality
+https://github.com/mdrhmn/dj-social-auth?tab=readme-ov-file 
+
 How to setup the template:
     docker compose up --build
 
