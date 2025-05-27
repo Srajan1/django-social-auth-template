@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     
     # Created project apps
     'authentication',
-    
+
     # Other added apps
     'allauth',
     'allauth.account',
